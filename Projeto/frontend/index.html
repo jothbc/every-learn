@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/login.css">
+
+  <script>
+    try {
+      const local = localStorage.getItem('@user');
+      if(!local){
+        window.location.href = `/login.html`;
+      }
+      // texto vire um objeto novamente -> JSON.parse
+      window.user = JSON.parse(local);
+    } catch (err) {
+      localStorage.removeItem('@user');
+      window.location.href = `/login.html`;
+    }
+
+    function logoff() {
+      localStorage.removeItem('@user');
+      window.location.href = `/login.html`;
+    }
+
+  </script>
+
+  <!-- DEPENDENCES -->
+  <script src="/js/axios.min.js"></script>
+  <script src="/js/notiflix-3.2.5.min.js"></script>
+  <link rel="stylesheet" href="css/notiflix-3.2.5.min.css">
+</head>
+
+<body>
+
+  <header>
+    <picture>
+      <img src="/assets/logo.png" alt="">
+    </picture>
+
+    <div class="container">
+      <picture>
+        <img class="user_image" src="/assets/img_placeholder.png" alt="">
+        <input type="file" hidden id="avatar">
+      </picture>
+
+      <div class="user_info">
+        Bem vindo,
+        <br>
+        <span class="user_name">Usuário</span>
+      </div>
+      <div>
+        <button type="button" class="logoff" onclick="logoff()">
+          <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round"
+            stroke-linejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path>
+            <line x1="12" y1="2" x2="12" y2="12"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+  </header>
+
+  <div class="dashboard">
+
+    <form>
+      <h3>No que você está pensando?</h3>
+      <div class="detail">
+        <textarea name="message" placeholder="Digite sua mensagem..." cols="30" rows="10"></textarea>
+      </div>
+
+      <button type="submit">Postar</button>
+    </form>
+
+    <ul class="list">
+
+    </ul>
+  </div>
+
+
+  <script type="module">
+    import { API_ROUTES } from '/js/routes.js';
+    const userName = document.querySelector('.user_name');
+    const userImage = document.querySelector('.user_image');
+    const avatarInput = document.querySelector('#avatar');
+    userName.innerHTML = window.user.name;
+
+    const ulList = document.querySelector('.list');
+
+    userImage.addEventListener('click', ()=>{
+      avatarInput.click();
+    })
+
+    avatarInput.addEventListener('change', async ()=>{
+      if(avatarInput.files.length > 0){
+        console.log(avatarInput.files);
+        try{
+          const data = new FormData();
+          data.append('id', window.user.id);
+          data.append('avatar', avatarInput.files[0]);
+
+          const response = await axios.post(API_ROUTES.AVATAR, data);
+          userImage.src = `${API_ROUTES.IMAGE}${response.data.avatar}`;
+          window.user.avatar = response.data.avatar;
+          localStorage.setItem('@user', JSON.stringify(window.user));
+
+        }catch(err){
+          Notiflix.Notify.failure('Ops... Não conseguimos enviar sua imagem.');
+        }
+      }
+    })
+
+    function addPost(post){
+      const li = document.createElement('li');
+      li.classList.add('item');
+
+      li.innerHTML = `
+        <picture>
+          <img src="${API_ROUTES.IMAGE}${post.user.avatar}" alt="" width="60" height="60">
+        </picture>
+        <div class="content">
+          <span class="user_name">${post.user.name}</span>
+          <br>
+          <p class="user_text">${post.text}</p>
+        </div>
+        <div class="oclock">
+          <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round"
+            stroke-linejoin="round" color="#ff9000" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"
+            style="color: rgb(255, 144, 0);">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+          <span>${new Date(post.created_at).toLocaleTimeString() }</span>
+        </div>
+      `;
+
+      ulList.appendChild(li);
+    }
+
+    const form = document.querySelector('form');
+    form.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+
+      var data = new FormData(form);
+      data = Object.fromEntries(data);
+      var isValid = true;
+
+      if(!data.message){
+        Notiflix.Notify.failure('Informe uma mensagem');
+        isValid = false;
+      }
+
+      if(isValid){
+        try{
+          const obj = {
+            id: window.user.id,
+            text: data.message
+          };
+
+          const response = await axios.post(API_ROUTES.POSTS, obj);
+          addPost(response.data);
+
+        }catch(err){
+          console.log(err);
+          Notiflix.Notify.failure('Ops... Alguma coisa deu errado');
+        }
+      }
+
+    });
+
+    (async ()=>{
+      try{
+        //load all posts
+        const response = await axios.get(API_ROUTES.POSTS);
+        //load yout avatar
+        userImage.src = `${API_ROUTES.IMAGE}${window.user.avatar}`;
+
+        response.data.forEach(post=>{
+          addPost(post);
+        })
+      }catch(err){
+        Notiflix.Notify.failure('Ops... Não conseguimos buscar os posts no momento');
+      }
+    })()
+  </script>
+
+  <!-- <script type="module">
+    import { API_ROUTES } from '/js/routes.js';
+
+    const elementUserName = document.querySelector('span.user_name');
+    const elementUserImage = document.querySelector('img.user_image');
+    const list = document.querySelector('ul.list');
+
+    elementUserName.innerHTML = window.user.name;
+    elementUserImage.src = `${API_ROUTES.IMAGE}${window.user.avatar}`;
+
+    const createPostElement = (post) => {
+      const liElement = document.createElement('li');
+      liElement.classList.add('item');
+
+      const time = new Date(post.created_at);
+
+      const bodyElement = `
+          <picture>
+            <img src="${API_ROUTES.IMAGE}${post.user.avatar}" alt="" width="60" height="60">
+          </picture>
+          <div class="content">
+            <span class="user_name">${post.user.name}</span>
+            <br>
+            <p class="user_text">${post.text}</p>
+          </div>
+          <div class="oclock">
+            <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" color="#ff9000" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" style="color: rgb(255, 144, 0);"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            <span>${time.toLocaleTimeString('pt-BR')}</span>
+          </div>
+        `;
+
+      liElement.innerHTML = bodyElement;
+
+      list.appendChild(liElement);
+    }
+
+    const form = document.querySelector('form');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(form);
+      const obj = Object.fromEntries(formData);
+
+      if (!obj.message) {
+        Notiflix.Notify.info('Informe uma mensagem');
+        return;
+      }
+
+      const message = {
+        id: window.user.id,
+        text: obj.message,
+      }
+      try {
+        Notiflix.Loading.circle();
+        const response = await axios.post(API_ROUTES.POSTS, message);
+        createPostElement(response.data);
+
+        form.reset();
+      }
+      catch (err) {
+        const message = err?.response?.data?.message;
+        if (message) {
+          Notiflix.Notify.failure(message);
+        } else {
+          Notiflix.Notify.failure('Oops... Something is wrong, try again.')
+        }
+      }
+      finally {
+        Notiflix.Loading.remove();
+      }
+    });
+
+    (async () => {
+      const response = await axios.get(API_ROUTES.POSTS);
+      if (response.data) {
+        response.data.forEach(post => {
+          createPostElement(post);
+        })
+      }
+    })();
+
+  </script> -->
+</body>
+
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <title>Nosso terceiro script</title>
+</head>
+
+<script>
+  window.onload = ()=>{
+    const formElement = document.querySelector('form');
+    var inputElement = formElement[0]; // input
+    
+    formElement.addEventListener('submit', (evt) => {
+      evt.preventDefault();
+
+      console.log(formElement);
+
+      const allRight = formElement.checkValidity();
+      if(!allRight){
+        console.log(formElement.reportValidity());
+      }
+    })
+  }
+</script>
+
+<body>
+  <!-- conteudo -->
+
+  <form novalidate>
+    <input type="text" required>
+
+    <button type="submit">Enviar</button>
+  </form>
+
+</body>
+
+</html>
