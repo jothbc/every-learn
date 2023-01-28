@@ -103,7 +103,7 @@
           <div class="row" style="margin-top: -60px">
             <button onclick="operacao('numero',0)" type="button"
               class="btn btn-dark zero btn-lg font-weight-light">0</button>
-            <button onclick="operacao('numero', '.')" type="button"
+            <button onclick="operacao('ponto', '.')" type="button"
               class="btn btn-dark btn-lg font-weight-light">.</button>
           </div>
         </div>
@@ -114,14 +114,41 @@
   <script>
     function operacao(tipo, valor) {
       var tela = document.querySelector('#tela');
-      if (tipo === 'acao') {
-        if(valor === 'c'){
+      if(tipo === 'ponto'){
+        if(tela.value.toString().at(-1) === '.'){
+          return;
+        }
+        let ultimoValor  =  [];
+        let valorTotalAoContrario = Array.from(tela.value).reverse();
+        for(let index = 0 ; index<valorTotalAoContrario.length; index++){
+            if(isNaN(Number(valorTotalAoContrario[index])) && valorTotalAoContrario[index] !== '.'){
+                break;
+            }
+            ultimoValor.push(valorTotalAoContrario[index]);
+        }
+        if(ultimoValor.includes('.')){
+          return;
+        }
+
+        if(isNaN(Number(tela.value.toString().at(-1)))){
+          tela.value += '0';
+        }
+        tela.value += valor;
+      }
+      else if (tipo === 'acao') {
+        if (valor === 'c') {
           tela.value = '';
         }
-        else if( valor === '='){
+        else if (valor === '=') {
           tela.value = eval(tela.value);
         }
         else {
+          //remover acao previa
+          if (isNaN(Number(tela.value.toString().at(-1)))) {
+            tela.value = tela.value.toString().substring(0, tela.value.length - 1);
+            console.log(tela.value)
+          }
+
           tela.value += valor;
         }
       }
