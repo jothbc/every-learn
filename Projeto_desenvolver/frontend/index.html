@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/login.css">
+
+  <script>
+    try {
+      // verificar se esta logado
+      // salvar em window.user
+    } catch (err) {
+      // retornar para login
+    }
+
+    function logoff() {
+      // fazer logoff
+    }
+
+  </script>
+
+  <!-- DEPENDENCES -->
+  <script src="/js/axios.min.js"></script>
+  <script src="/js/notiflix-3.2.5.min.js"></script>
+  <link rel="stylesheet" href="css/notiflix-3.2.5.min.css">
+</head>
+
+<body>
+
+  <header>
+    <picture>
+      <img src="/assets/logo.png" alt="">
+    </picture>
+
+    <div class="container">
+      <picture>
+        <img class="user_image" src="/assets/img_placeholder.png" alt="">
+        <input type="file" hidden id="avatar">
+      </picture>
+
+      <div class="user_info">
+        Bem vindo,
+        <br>
+        <span class="user_name">Usuário</span>
+      </div>
+      <div>
+        <button type="button" class="logoff" onclick="logoff()">
+          <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round"
+            stroke-linejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path>
+            <line x1="12" y1="2" x2="12" y2="12"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+  </header>
+
+  <div class="dashboard">
+
+    <form>
+      <h3>No que você está pensando?</h3>
+      <div class="detail">
+        <textarea name="message" placeholder="Digite sua mensagem..." cols="30" rows="10"></textarea>
+      </div>
+
+      <button type="submit">Postar</button>
+    </form>
+
+    <ul class="list">
+      <li>
+        <picture>
+          <img src="asd" alt="" width="60" height="60">
+        </picture>
+        <div class="content">
+          <span class="user_name">NOME DO USUARIO</span>
+          <br>
+          <p class="user_text">TEXTO DO USUARIO</p>
+        </div>
+        <div class="oclock">
+          <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round"
+            stroke-linejoin="round" color="#ff9000" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"
+            style="color: rgb(255, 144, 0);">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+          <span>12/12/2023</span>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+
+  <script type="module">
+    import { API_ROUTES } from '/js/routes.js';
+    const userName = document.querySelector('.user_name');
+    const userImage = document.querySelector('.user_image');
+    const avatarInput = document.querySelector('#avatar');
+
+    // carregar o nome do usuario logado
+    userName.innerHTML = '';
+
+    const ulList = document.querySelector('.list');
+
+    // ao clicar na imagem do usuario abrir input para selecionar nova foto
+    userImage.addEventListener('click', () => {
+      //avatarInput?.;
+    })
+
+    avatarInput.addEventListener('change', async () => {
+      // quando o usuario selecionar uma nova foto, enviar essa foto
+      if (avatarInput.files.length > 0) {
+        try {
+          // criar multipart para enviar para a API via POST para o endpoint API_ROUTES.AVATAR
+          // a api espera receber {id, avatar}  
+
+          // atualizar a imagem atual do site
+          // userImage.src = `${API_ROUTES.IMAGE}${...}`;
+
+          // atualizar objeto global e localstorage que tem informações do usuario
+
+        } catch (err) {
+          // exibir alerta de erro
+        }
+      }
+    })
+
+    function addPost(post) {
+      // dica: url da imagem = API_ROUTES.IMAGE + imagem
+      // li deve conter a class 'item';
+
+      // incluir o post na pagina
+    }
+
+    const form = document.querySelector('form');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      var data = new FormData(form);
+      data = Object.fromEntries(data);
+
+      // verificar se há mensagens
+      // caso o usuário não tenha informado a mensagem -> exibir alerta de erro
+      // caso tudo certo, enviar para API via POST
+      // obj que a API espera receber é {id, text}
+      // após enviar para a API, incluir post na listagem da tela
+      // caso de algum erro na API, exibir alerta de erro
+    });
+
+
+    //pre carregar todos os posts da API | endpoint API_ROUTES.POSTS
+    //e por fim carregar seu proprio avatar
+  </script>
+
+</body>
+
+</html>
