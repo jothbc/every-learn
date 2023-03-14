@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+
+  <h1>Conjuntos numéricos</h1>
+  <h2>N => Números Naturais</h2>
+  <pre>
+    N* = {1, 2, 3, 4, 5..., n, ...} ou N* = N - {0}: conjuntos dos números naturais não-nulos, ou seja, sem o zero.
+    Np = {0, 2, 4, 6, 8..., 2n, ...}, em que n ∈ N: conjunto dos números naturais pares.
+    Ni = {1, 3, 5, 7, 9..., 2n+1, ...}, em que n ∈ N: conjunto dos números naturais ímpares.
+    P = {2, 3, 5, 7, 11, 13, ...}: conjunto dos números naturais primos.
+  </pre>
+
+  <h2>Z => Números Inteiros</h2>
+  <pre>
+    Z* = {..., -4, -3, -2, -1, 1, 2, 3, 4, ...} ou Z* = Z - {0}: conjuntos dos números inteiros não-nulos, ou seja, sem o zero.
+    Z+ = {0, 1, 2, 3, 4, 5, ...}: conjunto dos números inteiros e não-negativos. Note que Z+ = N.
+    Z*+ = {1, 2, 3, 4, 5, ...}: conjunto dos números inteiros positivos e sem o zero.
+    Z - = {..., -5, -4, -3, -2, -1, 0}: conjunto dos números inteiros não-positivos.
+    Z*- = {..., -5, -4, -3, -2, -1}: conjunto dos números inteiros negativos e sem o zero.
+  </pre>
+
+  <h2>Q => Números Racionais</h2>
+  <pre>
+    Q = {0, ±1, ±1/2, ±1/3, ..., ±2, ±2/3, ±2/5, ..., ±3, ±3/2, ±3/4, ...}
+    Q* = subconjunto dos números racionais não-nulos, formado pelos números racionais sem o zero.
+    Q+ = subconjunto dos números racionais não-negativos, formado pelos números racionais positivos e o zero.
+    Q*+ = subconjunto dos números racionais positivos, formado pelos números racionais positivos, sem o zero.
+    Q- = subconjunto dos números racionais não-positivos, formado pelos números racionais negativos e o zero.
+    Q*- = subconjunto dos números racionais negativos, formado números racionais negativos, sem o zero.
+  </pre>
+
+  <h2>I => Números Irracionais</h2>
+  <pre>
+    O conjunto dos números irracionais é representado por I. Reúne os números decimais não exatos com uma representação infinita e não periódica, por exemplo: 3,141592... ou 1,203040...
+  </pre>
+
+  <h2>R => Números Reais</h2>
+  <pre>
+    R*= {x ∈ R│x ≠ 0}: conjunto dos números reais não-nulos.
+    R+ = {x ∈ R│x ≥ 0}: conjunto dos números reais não-negativos.
+    R*+ = {x ∈ R│x > 0}: conjunto dos números reais positivos.
+    R- = {x ∈ R│x ≤ 0}: conjunto dos números reais não-positivos.
+    R*- = {x ∈ R│x < 0}: conjunto dos números reais negativos.
+  </pre>
+
+  <h2>
+    EXEMPLO DE FUNCAO PAR
+  </h2>
+  <pre>
+    f(-x) = f(x)
+    ex:
+    f(x) = 2*|x|
+    f(-1) = 2*(-1) => 2 
+    f(1) = 2*1 => 2
+    f(-1) = f(1)
+  </pre>
+
+  <h2>
+    EXEMPLO DE FUNCAO IMPAR
+  </h2>
+  <pre>
+    f(-x) = -f(x)
+    f(-1) = -(f(1)) => -1
+    f(-(-1)) = -(f(-1)) => 1
+    f(-1) = -f(1)
+  </pre>
+
+  <h2>Funções Periódicas</h2>
+  <pre>
+    EX:
+    f = N -> Z
+        x |-> (-1)^x
+
+       x  | f(x)
+    ---------------
+       1  |  -1
+       2  |   1
+       3  |  -1
+       4  |   1
+  </pre>
+
+  <h2>Função Injetiva</h2>
+  <pre>
+    Imagem formada APENAS por uma ligação do dominio para contradominio
+    Ex:
+    Dominio  |  Contradominio  | Imagem
+    1        ->     2          |  2
+             |      3          |
+    2        ->     4          |  4
+             |      5          |
+    3        ->     6          |  6
+  </pre>
+  <h2>Função Sobrejetiva</h2>
+  <pre>
+    Imagem é igual ao contradominio
+    EX:
+    Dominio  |  Contradominio  | Imagem
+    -1      ->      2          |  2
+    1        ➚                 |  
+    -2       ->     4          |  4
+    2        ➚                 |  
+    -3       ->     6          |  6
+    3        ➚                 |  
+  </pre>
+  <h2>Função Bijetiva</h2>
+  <pre>
+    Quando for Injetiva e Sobrejetiva ao mesmo tempo
+    Ex:
+    Dominio  |  Contradominio  | Imagem
+    -1      ->     -2          |  -2
+    1       ->      2          |  2
+    -2      ->     -4          |  -4
+    2       ->      4          |  4
+    -3      ->     -6          |  -6
+    3       ->      6          |  6
+  </pre>
+
+  <h2>Função Inversa</h2>
+  <pre>
+    Quando é possível inverter o dominio e contradomino, e o dominio ainda continua sendo função,
+    ou seja, todos os itens do dominio estão relacionados com o contradominio.
+
+    Quando houver itens no dominio que não estão relacionados a nenhum item do contradominio deixa de ser uma função.
+
+    Uma função só poderá ter uma função inversa quando for Bijetiva.
+  </pre>
+
+
+</body>
+
+</html>
