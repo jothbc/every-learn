@@ -134,6 +134,100 @@
     Uma função só poderá ter uma função inversa quando for Bijetiva.
   </pre>
 
+  <h1>Funções Elementares</h1>
+
+  <h2>Função Exponêncial</h2>
+  <pre>
+    f(x) = a^x
+
+    regras-> 
+    a > 0
+    a != 1
+  </pre>
+  <form>
+    <label>
+      base:
+      <input type="number" onInput="proxyExponentialFunction.base = Number(event.target.value)">
+    </label>
+    <label>
+      expoente:
+      <input type="number" onInput="proxyExponentialFunction.expoente = Number(event.target.value)">
+    </label>
+    <label>
+      escala eixo X
+      <input type="range" min="3" max="100" value="3" onchange="proxyExponentialFunction.rangex = Number(event.target.value)">
+    </label>
+    <label>
+      escala eixo y
+      <input type="range" min="3" max="100" value=3 onchange="proxyExponentialFunction.rangey = Number(event.target.value)">
+    </label>
+    <pre id="resultExponentialFunction"></pre>
+    <canvas id="exponentialFunctionCanvas" width="400" height="400">
+    </canvas>
+
+
+    <script>
+      var proxyExponentialFunction = new Proxy({
+        base: 2,
+        expoente: 1,
+        rangex: 3, 
+        rangey: 3,
+      }, {
+        set: function (target, key, value) {
+          target[key] = value;
+          exponentialFunction();
+          canvasDrawPointers();
+        }
+      })
+      function exponentialFunction() {
+        const { base, expoente } = proxyExponentialFunction;
+        const resultElement = document.querySelector('#resultExponentialFunction');
+        if (base <= 0 || base === 1) {
+          resultElement.innerHTML = 'Base precisa ser maior que zero e diferente de 1';
+          return;
+        }
+        resultElement.innerHTML = `f(${expoente})=${base}^${expoente}<br/>f(${expoente})=${Math.pow(base, expoente | 0)}`;
+      }
+
+      var exponentialFunctionCanvasElement = document.querySelector('#exponentialFunctionCanvas');
+      var exponentialFunctionCanvasElementContext = exponentialFunctionCanvasElement.getContext('2d');
+      function canvasDraw(){
+        const ctx = exponentialFunctionCanvasElementContext;
+        ctx.clearRect(0,0,400,400);
+        ctx.fillStyle = "rgba(0, 0, 0, 0.3)";
+        ctx.fillRect(0,200,400,1);
+        ctx.fillRect(200,0,1,400);
+        return ctx;
+      }
+
+      function canvasDrawPointers(){
+        var ctx =  canvasDraw();
+        ctx.font = '10px serif';
+        
+        for(let x = (proxyExponentialFunction.rangex/2)*-1, interator = 0 ; interator <= 11; x+= proxyExponentialFunction.rangex / 10 , interator++){
+          ctx.fillText(parseFloat(x).toFixed(1), interator*(400/10), 200);
+        }
+        for(let y = (proxyExponentialFunction.rangey/2)*-1, interator = 0 ; interator <= 11; y+= proxyExponentialFunction.rangey / 10 , interator++){
+          if(interator === 5) continue;
+          ctx.fillText(parseFloat(y*-1).toFixed(1),  200,interator*(400/10));
+        }
+        
+
+        // ctx.lineWidth = 1 + i;
+        // ctx.beginPath();
+        // ctx.moveTo(5 + i * 14, 5);
+        // ctx.lineTo(5 + i * 14, 140);
+        // ctx.stroke();
+      }
+
+      canvasDrawPointers()
+    </script>
+  </form>
+
+
+
+
+
 
 </body>
 
