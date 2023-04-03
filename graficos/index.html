@@ -6,6 +6,22 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+
+  <script>
+    window.pipe = function () {
+      function executeFunctionsInOrder(functionsArray, index = 0, previousResult = null) {
+        if (index >= functionsArray.length) {
+          return previousResult;
+        }
+
+        const currentFunction = functionsArray[index];
+        const currentResult = currentFunction(previousResult);
+
+        return executeFunctionsInOrder(functionsArray, index + 1, currentResult);
+      }
+      return executeFunctionsInOrder(arguments);
+    }
+  </script>
 </head>
 
 <body>
@@ -147,71 +163,100 @@
   <form>
     <label>
       base:
-      <input type="number" onInput="proxyExponentialFunction.base = Number(event.target.value)">
+      <input type="number" onInput="proxyExponentialFunction.base = Number(event.target.value)"
+        value="proxyExponentialFunction.base">
     </label>
     <label>
       expoente:
-      <input type="number" onInput="proxyExponentialFunction.expoente = Number(event.target.value)">
+      <input type="number" onInput="proxyExponentialFunction.expoente = Number(event.target.value)"
+        value="proxyExponentialFunction.expoente">
     </label>
+    <br>
     <label>
       escala eixo X
-      <input type="range" min="3" max="100" value="3" onchange="proxyExponentialFunction.rangex = Number(event.target.value)">
+      <span data-exponential-x></span>
+      <input type="range" min="3" max="100" value="3"
+        onchange="proxyExponentialFunction.rangex = Number(event.target.value)">
     </label>
     <label>
       escala eixo y
-      <input type="range" min="3" max="100" value=3 onchange="proxyExponentialFunction.rangey = Number(event.target.value)">
+      <span data-exponential-y></span>
+      <input type="range" min="3" max="100" value=3
+        onchange="proxyExponentialFunction.rangey = Number(event.target.value)">
     </label>
+    <br>
+    <button type="button" onclick="exponentialFunctionAddPoint()">Add Point</button>
     <pre id="resultExponentialFunction"></pre>
     <canvas id="exponentialFunctionCanvas" width="400" height="400">
     </canvas>
 
 
     <script>
+      var exponentialFunctionCanvasElement = document.querySelector('#exponentialFunctionCanvas');
+      var exponentialFunctionUI = {
+        exponentialFunctionCanvasElementContext: exponentialFunctionCanvasElement.getContext('2d'),
+        resultElement: document.querySelector('#resultExponentialFunction'),
+        x: document.querySelector('[data-exponential-x]'),
+        y: document.querySelector('[data-exponential-y]'),
+      }
       var proxyExponentialFunction = new Proxy({
         base: 2,
         expoente: 1,
-        rangex: 3, 
+        rangex: 3,
         rangey: 3,
+        points: [],
+        calc: (base, expoent) => Math.pow(base, expoent | 0)
       }, {
         set: function (target, key, value) {
           target[key] = value;
           exponentialFunction();
           canvasDrawPointers();
+          setTimeout(updateUI, 0);
+
+          console.log(arguments);
         }
       })
+
       function exponentialFunction() {
-        const { base, expoente } = proxyExponentialFunction;
-        const resultElement = document.querySelector('#resultExponentialFunction');
+        const { base, expoente, calc } = proxyExponentialFunction;
+
         if (base <= 0 || base === 1) {
-          resultElement.innerHTML = 'Base precisa ser maior que zero e diferente de 1';
+          exponentialFunctionUI.resultElement.innerHTML = 'Base precisa ser maior que zero e diferente de 1';
           return;
         }
-        resultElement.innerHTML = `f(${expoente})=${base}^${expoente}<br/>f(${expoente})=${Math.pow(base, expoente | 0)}`;
+        const result = calc(base, expoente);
+        exponentialFunctionUI.resultElement.innerHTML = `f(${expoente})=${base}^${expoente}<br/>f(${expoente})=${result}`;
       }
 
-      var exponentialFunctionCanvasElement = document.querySelector('#exponentialFunctionCanvas');
-      var exponentialFunctionCanvasElementContext = exponentialFunctionCanvasElement.getContext('2d');
-      function canvasDraw(){
-        const ctx = exponentialFunctionCanvasElementContext;
-        ctx.clearRect(0,0,400,400);
+
+      function canvasDraw() {
+        const ctx = exponentialFunctionUI.exponentialFunctionCanvasElementContext;
+        ctx.clearRect(0, 0, 400, 400);
         ctx.fillStyle = "rgba(0, 0, 0, 0.3)";
-        ctx.fillRect(0,200,400,1);
-        ctx.fillRect(200,0,1,400);
+        ctx.fillRect(0, 200, 400, 1);
+        ctx.fillRect(200, 0, 1, 400);
         return ctx;
       }
 
-      function canvasDrawPointers(){
-        var ctx =  canvasDraw();
+      function drawCartesianPlane(ctx) {
         ctx.font = '10px serif';
-        
-        for(let x = (proxyExponentialFunction.rangex/2)*-1, interator = 0 ; interator <= 11; x+= proxyExponentialFunction.rangex / 10 , interator++){
-          ctx.fillText(parseFloat(x).toFixed(1), interator*(400/10), 200);
+        for (let x = (proxyExponentialFunction.rangex / 2) * -1, interator = 0; interator <= 11; x += proxyExponentialFunction.rangex / 10, interator++) {
+          ctx.fillText(parseFloat(x).toFixed(1), interator * (400 / 10), 200);
         }
-        for(let y = (proxyExponentialFunction.rangey/2)*-1, interator = 0 ; interator <= 11; y+= proxyExponentialFunction.rangey / 10 , interator++){
-          if(interator === 5) continue;
-          ctx.fillText(parseFloat(y*-1).toFixed(1),  200,interator*(400/10));
+        for (let y = (proxyExponentialFunction.rangey / 2) * -1, interator = 0; interator <= 11; y += proxyExponentialFunction.rangey / 10, interator++) {
+          if (interator === 5) continue;
+          ctx.fillText(parseFloat(y * -1).toFixed(1), 200, interator * (400 / 10));
         }
-        
+        return ctx;
+      }
+
+      function canvasDrawPointers() {
+        var ctx = pipe(
+          canvasDraw, 
+          drawCartesianPlane
+        );
+
+
 
         // ctx.lineWidth = 1 + i;
         // ctx.beginPath();
@@ -220,9 +265,34 @@
         // ctx.stroke();
       }
 
+      function updateUI() {
+        exponentialFunctionUI.x.innerHTML = `${proxyExponentialFunction.rangex / 2 * -1} á ${proxyExponentialFunction.rangex / 2}`;
+        exponentialFunctionUI.y.innerHTML = `${proxyExponentialFunction.rangey / 2 * -1} á ${proxyExponentialFunction.rangey / 2}`;
+      }
+
+      function exponentialFunctionAddPoint() {
+        const lastPoint = proxyExponentialFunction.points.at(-1);
+        if (!lastPoint) {
+          proxyExponentialFunction.points.push({
+            x: proxyExponentialFunction.expoente,
+            y: proxyExponentialFunction.calc(proxyExponentialFunction.base, proxyExponentialFunction.expoente),
+          })
+        }
+        else {
+          const nextX = lastPoint.x + 1;
+          proxyExponentialFunction.points.push({
+            x: nextX,
+            y: proxyExponentialFunction.calc(proxyExponentialFunction.base, nextX),
+          })
+        }
+
+
+      }
+      updateUI();
       canvasDrawPointers()
     </script>
   </form>
+
 
 
 
