@@ -65,6 +65,7 @@ main {
   position: absolute;
   top: 16px;
   left: 16px;
+  cursor: pointer;
 }
 .photo_detail i {
   display: flex;
@@ -178,6 +179,43 @@ footer {
   gap: 8px;
   justify-content: center;
   align-items: center;
+}
+
+.aside {
+  position: fixed;
+  right: 0;
+  top: 0;
+  height: 100%;
+  transition: 500ms;
+  background: #fff;
+  width: 300px;
+  padding: 56px 24px 24px;
+}
+.aside:not(.-open) {
+  right: -100%;
+}
+.aside_close {
+  background-color: transparent;
+  outline: none;
+  border: none;
+  position: absolute;
+  left: 24px;
+  top: 24px;
+}
+.aside label {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  font-weight: 100;
+  font-size: 12px;
+}
+.aside label + label {
+  margin-top: 16px;
+}
+.aside label input, .aside label textarea {
+  padding: 4px 8px;
+  border: 1px solid #c2c2c2;
+  border-radius: 4px;
 }
 
 /*# sourceMappingURL=style.css.map */

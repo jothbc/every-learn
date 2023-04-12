@@ -11,23 +11,23 @@ html {
 }
 
 @keyframes open {
-  from{
+  from {
     height: 0px;
     padding-top: 0px;
     padding-bottom: 0px;
   }
-  to{
+  to {
     height: 308px;
     padding-top: 48px;
     padding-bottom: 48px;
   }
 }
 
-@keyframes fadein{
-  from{
+@keyframes fadein {
+  from {
     opacity: 0;
   }
-  to{
+  to {
     opacity: 1;
   }
 }
@@ -68,6 +68,7 @@ main {
     position: absolute;
     top: 16px;
     left: 16px;
+    cursor: pointer;
     i {
       display: flex;
       width: 24px;
@@ -149,7 +150,7 @@ main {
   padding-bottom: 0;
   animation: open 500ms 2500ms ease-in-out forwards;
 
-  >*{
+  > * {
     opacity: 0;
     animation: fadein 500ms 2800ms ease-in-out forwards;
   }
@@ -181,11 +182,9 @@ main {
       left: 0;
     }
   }
-
-  
 }
 
-footer{
+footer {
   display: flex;
   width: 100%;
   height: 30px;
@@ -193,4 +192,49 @@ footer{
   gap: 8px;
   justify-content: center;
   align-items: center;
+}
+
+.aside {
+  position: fixed;
+  right: 0;
+  top: 0;
+  height: 100%;
+
+  transition: 500ms;
+
+  &:not(.-open) {
+    right: -100%;
+  }
+
+  background: #fff;
+  width: 300px;
+  padding: 56px 24px 24px;
+
+  &_close {
+    background-color: transparent;
+    outline: none;
+    border: none;
+
+    position: absolute;
+    left: 24px;
+    top: 24px;
+  }
+
+  label {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    font-weight: 100;
+    font-size: 12px;
+
+    & + label {
+      margin-top: 16px;
+    }
+
+    input, textarea {
+      padding: 4px 8px;
+      border: 1px solid #c2c2c2;
+      border-radius: 4px;
+    }
+  }
 }

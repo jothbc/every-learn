@@ -1,5 +1,5 @@
-// const baseURL = 'http://localhost:3333'
-const baseURL = 'http://192.168.100.203:3333'
+const baseURL = 'http://localhost:3333'
+// const baseURL = 'http://192.168.100.203:3333'
 
 export const API_ROUTES = {
   LOGIN: `${baseURL}/login`,

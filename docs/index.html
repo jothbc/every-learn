@@ -21,7 +21,7 @@
     <section class="container">
 
       <div class="photo">
-        <div class="photo_detail">
+        <div class="photo_detail" onclick="toggleAside()">
           <i></i>
           <i></i>
         </div>
@@ -37,11 +37,13 @@
       </div>
       <div class="content">
         <p>Ocupação</p>
-        <strong>Dev Frontend | Tech Lead</strong>
+        <strong class="content_ocuppation">Dev Frontend | Tech Lead</strong>
         <p>Local</p>
-        <strong>Balneário Camboriú</strong>
-        <small>
-          Sou um desenvolvedor frontend apaixonado por criar interfaces de usuário incríveis. Com habilidades em HTML, CSS e JavaScript, transformo designs em realidade e adoro trabalhar em equipe para criar soluções inovadoras e eficazes. Sempre buscando aprender e experimentar novas tecnologias.
+        <strong class="content_locale">Balneário Camboriú</strong>
+        <small class="content_description">
+          Sou um desenvolvedor frontend apaixonado por criar interfaces de usuário incríveis. Com habilidades em HTML,
+          CSS e JavaScript, transformo designs em realidade e adoro trabalhar em equipe para criar soluções inovadoras e
+          eficazes. Sempre buscando aprender e experimentar novas tecnologias.
         </small>
       </div>
       <footer>
@@ -66,6 +68,94 @@
     </section>
   </main>
 
+  <aside class="aside">
+    <button class="aside_close" onclick="toggleAside()"><i class="fa-solid fa-xmark"></i></button>
+
+    <label>
+      Nome
+      <input type="text" name="name" oninput="changeName(event.target.value)">
+    </label>
+
+    <label>
+      Sobrenome
+      <input type="text" name="lastname" oninput="changeLastName(event.target.value)">
+    </label>
+
+    <label>
+      Followers
+      <input type="text" name="followers" oninput="changeFollowers(event.target.value)">
+    </label>
+
+    <label>
+      Following
+      <input type="text" name="following" oninput="changeFollowing(event.target.value)">
+    </label>
+
+    <label>
+      Ocupação
+      <input type="text" name="occupation" oninput="changeOccupation(event.target.value)">
+    </label>
+
+    <label>
+      Local
+      <input type="text" name="locale" oninput="changeLocale(event.target.value)">
+    </label>
+
+    <label>
+      Descrição
+      <textarea name="description" onchange="changeDescription(event.target.value)"></textarea>
+    </label>
+  </aside>
+
+
+
+  <script>
+    var asideElement = document.querySelector('.aside');
+    var nameElement = document.querySelector('.photo_name h1');
+    var lastNameElement = document.querySelector('.photo_name h2');
+
+    var followersElement = document.querySelector('.photo_name-follow strong:nth-child(1)');
+    var followingElement = document.querySelector('.photo_name-follow strong:nth-child(2)');
+
+    var occupationElement = document.querySelector('.content_ocuppation');
+    var localeElement = document.querySelector('.content_locale');
+
+    var descriptionElement = document.querySelector('.content_description');
+
+    function toggleAside() {
+      asideElement.classList.toggle('-open');
+    }
+
+    function changeName(value) {
+      nameElement.innerHTML = value;
+    }
+
+    function changeLastName(value) {
+      lastNameElement.innerHTML = value;
+    }
+
+    function changeFollowers(value) {
+      followersElement.innerHTML = value;
+    }
+
+    function changeFollowing(value) {
+      followingElement.innerHTML = value;
+    }
+
+    function changeOccupation(value) {
+      occupationElement.innerHTML = value;
+    }
+    
+    function changeLocale(value) {
+      localeElement.innerHTML = value;
+    }
+
+    function changeDescription(value){
+      descriptionElement.innerHTML = value;
+    }
+
+
+  </script>
 </body>
 
 </html>
