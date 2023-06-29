@@ -45,6 +45,10 @@ class UserRepository {
 
     return userWithAvatar;
   }
+
+  public resetAll(): void {
+    this.users = [];
+  }
 }
 
 export default UserRepository;

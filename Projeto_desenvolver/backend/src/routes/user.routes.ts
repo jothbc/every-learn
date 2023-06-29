@@ -5,6 +5,7 @@ import UserRepository from '../repositories/UserRepository';
 
 import CreateUserService from '../services/CreateUserService';
 import UpdateUserAvatarService from '../services/UpdateAvatarUserService';
+import { postRepository } from './post.routes';
 
 const usersRouter = Router();
 
@@ -31,7 +32,9 @@ usersRouter.post('/', (request, response) => {
 
     return response.json({ ...user, password: '' });
   } catch (err) {
-    return response.status(400).json({ message: err.message });
+    return response
+      .status(400)
+      .json({ message: (err as { message: string }).message });
   }
 });
 
@@ -46,8 +49,20 @@ usersRouter.post('/avatar', upload.single('avatar'), (request, response) => {
     const user = updateAvatarUserService.execute({ id, avatar: file.filename });
     return response.json({ ...user, password: '' });
   } catch (err) {
-    return response.status(400).json({ message: err.message });
+    return response.status(400).json({
+      message:
+        (err as { message: string }).message ||
+        'Ops... Aconteceu algum erro interno no servidor!',
+    });
   }
+});
+
+usersRouter.get('/reset', (request, response) => {
+  userRepository.resetAll();
+  postRepository.removeAll();
+  response.status(200).json({
+    message: 'reset all called',
+  });
 });
 
 export default usersRouter;

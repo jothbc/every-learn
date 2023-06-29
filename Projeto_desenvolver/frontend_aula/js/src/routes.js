@@ -1,4 +1,5 @@
 const baseURL = 'http://localhost:3333'
+// const baseURL = 'http://localhost:3333'
 
 export const API_ROUTES = {
   LOGIN: `${baseURL}/login`,
@@ -7,3 +8,4 @@ export const API_ROUTES = {
   IMAGE: `${baseURL}/files/`,
   AVATAR: `${baseURL}/users/avatar`,
 }
+

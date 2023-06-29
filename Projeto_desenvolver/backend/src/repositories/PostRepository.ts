@@ -26,6 +26,10 @@ class PostRepository {
 
     return post;
   }
+
+  public removeAll(): void {
+    this.posts = [];
+  }
 }
 
 export default PostRepository;

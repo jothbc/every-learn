@@ -5,7 +5,7 @@ import { userRepository } from './user.routes';
 
 const postRouter = Router();
 
-const postRepository = new PostRepository();
+export const postRepository = new PostRepository();
 
 postRouter.get('/', (request, response) => {
   return response.json(postRepository.getAll());
