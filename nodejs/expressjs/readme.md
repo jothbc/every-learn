@@ -34,3 +34,15 @@
   },
   ...
 ```
+## to use hot reload install 'nodemon'
+```cmd
+  yarn add nodemon
+```
+- update your package.json
+```JSON
+  ...
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  ...
+```
