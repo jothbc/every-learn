@@ -1,5 +1,5 @@
 class Post {
-  constructor(text, user){
+  constructor({text, user}){
     this.id = new Date().getTime();
     this.text = text;
     this.user = user;
