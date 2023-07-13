@@ -14,14 +14,20 @@
 
   <script>
     try {
-      // verificar se esta logado
-      // salvar em window.user
+      const savedUser = localStorage.getItem('mw-user');
+      window.user = JSON.parse(savedUser);
+
+      if(!window.user.id){
+        window.location.href = './login.html';
+      }
     } catch (err) {
-      // retornar para login
+      window.location.href = './login.html';
     }
 
     function logoff() {
       // fazer logoff
+      localStorage.removeItem('mw-user');
+      window.location.href = './login.html';
     }
 
   </script>
@@ -75,28 +81,11 @@
     </form>
 
     <ul class="list">
-      <li class="item">
-        <picture>
-          <img src="./assets/img_placeholder.png" alt="" width="60" height="60">
-        </picture>
-        <div class="content">
-          <span class="user_name">NOME DO USUARIO</span>
-          <br>
-          <p class="user_text">TEXTO DO USUARIO</p>
-        </div>
-        <div class="oclock">
-          <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round"
-            stroke-linejoin="round" color="#ff9000" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"
-            style="color: rgb(255, 144, 0);">
-            <circle cx="12" cy="12" r="10"></circle>
-            <polyline points="12 6 12 12 16 14"></polyline>
-          </svg>
-          <span>12/12/2023</span>
-        </div>
-      </li>
+      
     </ul>
   </div>
 
+  <script type="module" src="./js/src/index.js"></script>
 </body>
 
 </html>
