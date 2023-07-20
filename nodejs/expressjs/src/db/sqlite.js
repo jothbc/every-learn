@@ -6,64 +6,69 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const open = () => {
-  let db = new sqlite3.Database(__dirname + '/database.sqlite', (err) => {
+  let db = new sqlite3.Database(__dirname + '/database.sqlite', sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, (err) => {
     if (err) {
-      return console.error(err.message);
+      console.error(err.message);
+    } else {
+      console.log('Conexão bem-sucedida com o banco de dados SQLite.');
     }
-    console.log('Conexão bem-sucedida com o banco de dados SQLite.');
   });
   return db;
-}
+};
+
 const close = (db) => {
-  if(!db) return;
-  db.close((err) => {
-    if (err) {
-      return console.error(err.message);
-    }
-    console.log('Conexão fechada com o banco de dados SQLite.');
-  });
-}
+  if (db) {
+    db.close((err) => {
+      if (err) {
+        console.error(err.message);
+      } else {
+        console.log('Conexão fechada com o banco de dados SQLite.');
+      }
+    });
+  }
+};
 
 const run = async (command, params = []) => {
-  var db;
+  let db;
   try {
     db = open();
-    var result = await new Promise((resolve, reject) => {
-      const stmt = db.prepare(command, params);
-      stmt.run(params, function (err) {
+    const result = await new Promise((resolve, reject) => {
+      db.run(command, params, function (err) {
         if (err) {
-          return reject(err.message);
+          reject(err.message);
+        } else {
+          resolve(this);
         }
-        return resolve(this);
-      })
+      });
     });
     return result;
   } catch (err) {
-    return err
+    return err;
   } finally {
     close(db);
   }
-}
+};
 
 const all = async (command, params = []) => {
   let db;
   try {
     db = open();
-    var result = await new Promise((resolve, reject)=>{
+    const result = await new Promise((resolve, reject) => {
       db.all(command, params, (err, rows) => {
         if (err) {
-          return reject(err);
+          reject(err);
+        } else {
+          resolve(rows);
         }
-        return resolve(rows);
       });
     });
     return result;
   } catch (err) {
-    return err
+    return err;
   } finally {
     close(db);
   }
-}
+};
 
 const db = {
   run,

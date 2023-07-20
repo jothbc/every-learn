@@ -1,9 +1,9 @@
 class User {
-  constructor({name, email, avatar, password}){
-    this.id = new Date().getTime();
+  constructor({id, name, email, avatar, password}){
+    this.id = id ?? new Date().getTime();
     this.name = name;
     this.email = email;
-    this.avatar = avatar;
+    this.avatar = avatar ?? 'placeholder.png';
     this.password = password;
   }
 }
