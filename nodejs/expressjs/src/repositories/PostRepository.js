@@ -1,15 +1,19 @@
 import db from '../db/sqlite.js';
 import Post from '../models/Post.js'
+import User from '../models/User.js';
 
 class PostRepository {
 
-  async createPost({userId, text}) {
+  async createPost({ userId, text }) {
+    const user = new User({
+      id: userId
+    });
     const post = new Post({
       text,
-      user_id: userId
+      user
     });
-    const result = await db.run('INSERT INTO post (user_id, text, created_at) VALUES (?,?,?)', [post.user_id, post.text, post.created_at]);
-    return result;
+    const result = await db.run('INSERT INTO post (user_id, text, created_at) VALUES (?,?,?)', [user.id, post.text, post.created_at]);
+    return { result, post };
   }
 
   async getAllPosts() {

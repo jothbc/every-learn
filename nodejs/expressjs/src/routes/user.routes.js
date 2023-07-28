@@ -4,11 +4,11 @@ import LoginService from '../services/LoginService.js';
 
 const user = Router();
 
-user.get('/', (request, response) => {
-  response.status(200).json({
-    message: 'oks'
-  })
-});
+// user.get('/', (request, response) => {
+//   response.status(200).json({
+//     message: 'oks'
+//   })
+// });
 user.post('/login', async (request, response) => {
   try {
     const { body } = request;

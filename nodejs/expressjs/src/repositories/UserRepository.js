@@ -13,6 +13,11 @@ class UserRepository {
     return result;
   }
 
+  async getUserById(id) {
+    const result = await db.all('SELECT * FROM user WHERE id = ?', [id]);
+    return result;
+  }
+
   async updateAvatar(newAvatar, id) {
     const result = await db.run('UPDATE user SET avatar = ? where id = ? ', [avatar, id]);
     return result;
