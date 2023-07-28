@@ -1,11 +1,11 @@
 import { Router } from 'express'
-import ClearUserService from '../services/ClearUsersService.js';
+import ClearAllService from '../services/ClearAllService.js';
 
 const api = Router();
 
-api.get('/user', async (request, response) => {
+api.get('/reset', async (request, response) => {
   try{
-    const service = await ClearUserService();
+    const service = await ClearAllService();
     response.status(200).json({
       result: service,
     })

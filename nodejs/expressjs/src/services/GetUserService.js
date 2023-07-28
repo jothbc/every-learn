@@ -9,7 +9,7 @@ const GetUserService = async ({ id }) => {
     delete user.password;
     return user;
   }
-  throw new Error(result)
+  throw new Error('User not found')
 };
 
 export default GetUserService;

@@ -4,10 +4,7 @@ import User from '../models/User.js';
 
 class PostRepository {
 
-  async createPost({ userId, text }) {
-    const user = new User({
-      id: userId
-    });
+  async createPost({ user, text }) {
     const post = new Post({
       text,
       user

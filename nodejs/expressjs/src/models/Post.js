@@ -1,13 +1,11 @@
 import User from "./User.js";
 
 class Post {
-  constructor({text, user}){
-    const [date, time] = new Date().toLocaleString('pt-BR').split(' ');
-
-    this.id = new Date().getTime();
+  constructor({id, text, user, created_at}){
+    this.id = id;
     this.text = text;
     this.user = user;
-    this.created_at = `${date.split('/').reverse().join('-')} ${time}`;
+    this.created_at = created_at ?? new Date().toISOString().slice(0, 19).replace("T", " ");
   }
 }
 
