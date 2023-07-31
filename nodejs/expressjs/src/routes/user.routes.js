@@ -1,6 +1,12 @@
-import { Router } from 'express'
+import { Router } from 'express';
+import multer from 'multer';
+
 import CreateUserService from '../services/CreateUserService.js';
 import LoginService from '../services/LoginService.js';
+
+import multerConfig from '../config/multerConfig.js';
+
+const upload = multer(multerConfig)
 
 const user = Router();
 
@@ -29,5 +35,12 @@ user.post('/', async (request, response) => {
     response.status(400).json({ message: err.message })
   }
 });
+
+user.post('/avatar', upload.single('avatar'), (req, res) => {
+  res.status(200).json({
+    file: req.file,
+    body: req.body
+  })
+})
 
 export default user;
