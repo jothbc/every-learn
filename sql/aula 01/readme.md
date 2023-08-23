@@ -9,4 +9,6 @@
   [] Quais os mais usados
 [] Como criar uma *Tabela*
   [] Comandos básicos para criação de tabela
+  [] Como deletar uma tabela
   [] Como funciona o `AUTO_INCREMENT`
+  [] Como criar uma `PRIMARY KEY`
