@@ -47,6 +47,21 @@ FROM alunos;
 
 8-
 ```sql
-SELECT UPPER(nome) AS nome_maiusculo, FORMAT(preco, 2) AS preco_formatado
+SELECT UPPER(nome) AS nome_maiusculo, preco
+FROM produtos
+ORDER BY preco;
+```
+
+9-
+```sql
+SELECT AVG(preco) AS media_preco
 FROM produtos;
+```
+
+10-
+```sql
+SELECT *
+FROM produtos
+ORDER BY preco DESC
+LIMIT 1;
 ```
