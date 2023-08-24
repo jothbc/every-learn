@@ -34,7 +34,7 @@ FROM alunos;
 
 6-
 ```sql
-SELECT categoria, MAX(preco) AS preco_maximo
+SELECT nome, categoria, MAX(preco) AS preco_maximo
 FROM produtos
 GROUP BY categoria;
 ```
