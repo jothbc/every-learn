@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Image Map Generator</title>
+</head>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html,
+  body {
+    height: 100%;
+  }
+
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #root {
+    display: flex;
+    position: relative;
+    width: fit-content;
+    height: fit-content;
+  }
+
+  canva {}
+
+  map {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 0, 0, 0.157);
+  }
+
+  area {
+    background-color: blue;
+  }
+</style>
+
+<body>
+
+  <div id="root">
+    <img src="dump.png" alt="Imagem" id="sourceImage" style="display: none;">
+    <canvas id="canvas" width="600" height="400"></canvas>
+    <map name="imagemMapa" id="imagemMapa"></map>
+  </div>
+
+
+  <script>
+    const sourceImage = document.getElementById('sourceImage');
+    const canvas = document.getElementById('canvas');
+    const context = canvas.getContext('2d');
+    const imagemMapa = document.getElementById('imagemMapa');
+
+    sourceImage.onload = function () {
+      canvas.width = sourceImage.width;
+      canvas.height = sourceImage.height;
+      context.drawImage(sourceImage, 0, 0);
+
+      const imageData = context.getImageData(0, 0, canvas.width, canvas.height).data;
+      const shapes = []; // Armazenará as formas identificadas
+
+      let currentX = 0;
+      let currentY = 0;
+
+      let matriz = Array.from({ length: canvas.width }, (l, l1) => {
+        return Array.from({ length: canvas.height }, (c, c1) => {
+          const line = l1 * canvas.width;
+          const pixelIndex = (line + c1) * 4;
+          const r = imageData[pixelIndex];
+          const g = imageData[pixelIndex + 1];
+          const b = imageData[pixelIndex + 2];
+
+          const colors = {
+            '000': 'black',
+          }
+
+          return colors[`${r}${g}${b}`] || '_____';
+        });
+      });
+
+      console.log(matriz);
+
+      for (let line = 0; line < matriz.length; line++) {
+        const columns = matriz[line];
+
+        for(let column = 0; column < columns; column++){
+
+          
+
+        }
+
+      }
+
+
+      // for (let y = 0; y < canvas.height; y++) {
+      //   for (let x = 0; x < canvas.width; x++) {
+      //     // y linha
+      //     // x coluna
+      //     const line = y * canvas.width;
+      //     const pixelIndex = (line + x) * 4;
+      //     const r = imageData[pixelIndex];
+      //     const g = imageData[pixelIndex + 1];
+      //     const b = imageData[pixelIndex + 2];
+      //     const alpha = imageData[pixelIndex + 3];
+
+
+      //     if (r === 0 && g === 0 && b === 0) { // Cor preta
+      //       if (currentX === x && currentY === y) { // Continuando a forma
+      //         continue;
+      //       } else {
+      //         currentX = x;
+      //         currentY = y;
+      //         console.log(y,x);
+      //       }
+
+      //       const shape = {
+      //         type: 'rect',
+      //         coordinates: [x, y, x + 1, y + 1], // Coordenadas de um pixel (retângulo 1x1)
+      //         link: '#' // Link para a área interativa
+      //       };
+
+      //       shapes.push(shape);
+      //     }
+      //   }
+      // }
+
+      // // Crie elementos <area> com base nas formas identificadas
+      // shapes.forEach(shape => {
+      //   const area = document.createElement('area');
+      //   area.shape = shape.type;
+      //   area.coords = shape.coordinates;
+      //   area.href = shape.link;
+      //   imagemMapa.appendChild(area);
+      // });
+    };
+
+    sourceImage.src = 'dump.png';
+  </script>
+
+</body>
+
+</html>
