@@ -19,7 +19,7 @@ select concat(autor, ' escreveu ', titulo) from livro
 select UPPER(autor) from livro
 
 alter table livro drop column preco;
-alter table livro modify column preco decimal(10,2) after autor;
+-- alter table livro modify column preco decimal(10,2) after autor;
 alter table livro add preco decimal(10,2) after autor
 
 update livro set preco = 1199.90 where id = 1
