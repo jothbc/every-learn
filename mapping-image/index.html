@@ -24,6 +24,12 @@
 
   #root {
     display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  #canva-root {
+    display: flex;
     position: relative;
     width: fit-content;
     height: fit-content;
@@ -46,27 +52,46 @@
 </style>
 
 <body>
-
   <div id="root">
-    <img src="dump.png" alt="Imagem" id="sourceImage" style="display: none;">
-    <canvas id="canvas" width="600" height="400"></canvas>
-    <map name="imagemMapa" id="imagemMapa"></map>
+    <label>
+      Imagem Normal
+      <input type="file" id="sourceImage">
+    </label>
+    <label>
+      Dump da Imagem
+      <input type="file" id="sourceImageDump">
+    </label>
+    <div id="canva-root">
+      <!-- <img src="/normal.png" alt="Imagem" id="sourceImage" style="display: none;"> -->
+      <canvas id="canvas" width="600" height="400"></canvas>
+      <map name="imagemMapa" id="imagemMapa"></map>
+    </div>
   </div>
 
 
   <script>
-    const sourceImage = document.getElementById('sourceImage');
+    const sourceImageDump = document.getElementById('sourceImageDump');
     const canvas = document.getElementById('canvas');
     const context = canvas.getContext('2d');
     const imagemMapa = document.getElementById('imagemMapa');
 
-    sourceImage.onload = function () {
-      canvas.width = sourceImage.width;
-      canvas.height = sourceImage.height;
-      context.drawImage(sourceImage, 0, 0);
+    const colors = {
+      '000000000': 'B',
+    }
+    const DIRECTION = {
+      UP: 'UP',
+      DOWN: 'DOWN',
+      LEFT: 'LEFT',
+      RIGHT: 'RIGHT',
+    }
+
+    const loadDump = (image) => {
+      canvas.width = image.width;
+      canvas.height = image.height;
+      context.drawImage(image, 0, 0);
 
       const imageData = context.getImageData(0, 0, canvas.width, canvas.height).data;
-      const shapes = []; // Armazenará as formas identificadas
+      console.log(imageData);
 
       let currentX = 0;
       let currentY = 0;
@@ -79,73 +104,98 @@
           const g = imageData[pixelIndex + 1];
           const b = imageData[pixelIndex + 2];
 
-          const colors = {
-            '000': 'black',
-          }
-
-          return colors[`${r}${g}${b}`] || '_____';
+          return colors[`${String(r).padStart(3,'0')}${String(g).padStart(3,'0')}${String(b).padStart(3,'0')}`] || '-';
         });
       });
 
-      console.log(matriz);
+      // console.log(matriz);
+      // return;
+
+      function propagation(color, column, line, chair, actualDir, prevDir) {
+        matriz[line][column] = chair;
+
+        // UP
+        if (line > 0 && matriz[line - 1][column] === color && actualDir !== DIRECTION.DOWN) propagation(color, column, line - 1, chair, DIRECTION.UP);
+        // RIGHT
+        if (column < (matriz[line].length - 1) && matriz[line][column + 1] === color && actualDir !== DIRECTION.LEFT) propagation(color, column + 1, line, chair, DIRECTION.RIGHT);
+        // DOWM
+        if (line < (matriz.length - 1) && matriz[line + 1][column] === color && actualDir !== DIRECTION.UP) propagation(color, column, line + 1, chair, DIRECTION.DOWN);
+        // LEFT
+        if (column > 0 && matriz[line][column - 1] === color && actualDir !== DIRECTION.RIGHT) propagation(color, column - 1, line, chair, DIRECTION.LEFT);
+      }
 
       let chairs = 0;
 
       for (let line = 0; line < matriz.length; line++) {
-        const columns = matriz[line];
+        const actualLine = matriz[line];
 
-        for(let column = 0; column < columns; column++){
+        for (let column = 0; column < actualLine.length; column++) {
+          const cell = actualLine[column];
 
-          
-
+          if (cell === colors['000000000']) {
+            propagation(colors['000000000'], column, line, ++chairs);
+          }
         }
 
       }
 
+      console.log(matriz);
+      console.log(chairs);
+    }
 
-      // for (let y = 0; y < canvas.height; y++) {
-      //   for (let x = 0; x < canvas.width; x++) {
-      //     // y linha
-      //     // x coluna
-      //     const line = y * canvas.width;
-      //     const pixelIndex = (line + x) * 4;
-      //     const r = imageData[pixelIndex];
-      //     const g = imageData[pixelIndex + 1];
-      //     const b = imageData[pixelIndex + 2];
-      //     const alpha = imageData[pixelIndex + 3];
+    sourceImageDump.addEventListener('change', (e) => {
+      const files = e.target.files;
+      if (files.length > 0) {
+        const file = files[0];
+
+        const image = new Image();
+        image.onload = loadDump.bind(null, image);
+        image.src = URL.createObjectURL(file);
+      }
+    });
 
 
-      //     if (r === 0 && g === 0 && b === 0) { // Cor preta
-      //       if (currentX === x && currentY === y) { // Continuando a forma
-      //         continue;
-      //       } else {
-      //         currentX = x;
-      //         currentY = y;
-      //         console.log(y,x);
-      //       }
+    function applyMask (){
+      for (let y = 0; y < canvas.height; y++) {
+        for (let x = 0; x < canvas.width; x++) {
+          const line = y * canvas.width;
+          const pixelIndex = (line + x) * 4;
+          const r = imageData[pixelIndex];
+          const g = imageData[pixelIndex + 1];
+          const b = imageData[pixelIndex + 2];
+          const alpha = imageData[pixelIndex + 3];
 
-      //       const shape = {
-      //         type: 'rect',
-      //         coordinates: [x, y, x + 1, y + 1], // Coordenadas de um pixel (retângulo 1x1)
-      //         link: '#' // Link para a área interativa
-      //       };
 
-      //       shapes.push(shape);
-      //     }
-      //   }
-      // }
+          if (r === 0 && g === 0 && b === 0) { // Cor preta
+            if (currentX === x && currentY === y) { // Continuando a forma
+              continue;
+            } else {
+              currentX = x;
+              currentY = y;
+              console.log(y,x);
+            }
 
-      // // Crie elementos <area> com base nas formas identificadas
-      // shapes.forEach(shape => {
-      //   const area = document.createElement('area');
-      //   area.shape = shape.type;
-      //   area.coords = shape.coordinates;
-      //   area.href = shape.link;
-      //   imagemMapa.appendChild(area);
-      // });
-    };
+            const shape = {
+              type: 'rect',
+              coordinates: [x, y, x + 1, y + 1], // Coordenadas de um pixel (retângulo 1x1)
+              link: '#' // Link para a área interativa
+            };
 
-    sourceImage.src = 'dump.png';
+            shapes.push(shape);
+          }
+        }
+      }
+
+      // Crie elementos <area> com base nas formas identificadas
+      shapes.forEach(shape => {
+        const area = document.createElement('area');
+        area.shape = shape.type;
+        area.coords = shape.coordinates;
+        area.href = shape.link;
+        imagemMapa.appendChild(area);
+      });
+    }
+
   </script>
 
 </body>

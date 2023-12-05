@@ -13,16 +13,16 @@
   <link rel="stylesheet" href="./css/login.css">
 
   <script>
-    try {
-      const savedUser = localStorage.getItem('mw-user');
-      window.user = JSON.parse(savedUser);
+    // try {
+    //   const savedUser = localStorage.getItem('mw-user');
+    //   window.user = JSON.parse(savedUser);
 
-      if(!window.user.id){
-        window.location.href = './login.html';
-      }
-    } catch (err) {
-      window.location.href = './login.html';
-    }
+    //   if(!window.user.id){
+    //     window.location.href = './login.html';
+    //   }
+    // } catch (err) {
+    //   window.location.href = './login.html';
+    // }
 
     function logoff() {
       // fazer logoff
