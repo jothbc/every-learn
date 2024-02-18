@@ -3,13 +3,46 @@ import connection from '../db/db.js';
 class UserSerivice {
 
 
-  static async createUser(req, res) { }
+  static async createUser({ name, email, password }) {
+    const result = await new Promise((resolve, reject) => {
+      connection.query('INSERT INTO users (name, email, password) VALUES (?,?,?)', [name, email, password], (error, results) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(results);
+        }
+      })
+    });
+    return result;
+  }
 
-  static async getUserByEmail(req, res) { }
+  static async getUserByEmail() { }
 
-  static async getUserById(req, res) { }
+  static async getAvatar(userId) {
+    const result = await new Promise((resolve, reject) => {
+      connection.query('SELECT avatar FROM users WHERE id =?', [userId], (error, results) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(results);
+        }
+      })
+    })
+    return result.length > 0 ? result[0].avatar : null;
+  }
 
-  static async updateAvatar(req, res) { }
+  static async updateAvatar(userId, filename) { 
+    const result = await new Promise((resolve, reject) => {
+      connection.query('UPDATE users SET avatar =? WHERE id =?', [filename, userId], (error, results) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(results);
+        }
+      })
+    });
+    return result;
+  }
 
   static async login({ email, password }) {
     const result = await new Promise((resolve, reject) => {

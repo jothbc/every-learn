@@ -16,5 +16,6 @@ create table posts(
 	id int primary key auto_increment,
 	text varchar(5000),
 	user_id int,
+  created_at timestamp default current_timestamp,
 	foreign key (user_id) references users(id)
 );
