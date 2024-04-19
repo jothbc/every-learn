@@ -5,7 +5,8 @@ class UserSerivice {
 
   static async createUser({ name, email, password }) {
     const result = await new Promise((resolve, reject) => {
-      connection.query('INSERT INTO users (name, email, password) VALUES (?,?,?)', [name, email, password], (error, results) => {
+      const defaultAvatar = 'placeholder.png';
+      connection.query('INSERT INTO users (name, email, password, avatar) VALUES (?,?,?,?)', [name, email, password, defaultAvatar], (error, results) => {
         if (error) {
           reject(error);
         } else {

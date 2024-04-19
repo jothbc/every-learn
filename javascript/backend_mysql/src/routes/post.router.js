@@ -18,7 +18,8 @@ postRouter.post("/", authMiddleware, async (request, response) => {
   try{
     const result = await PostService.createPost({text: request.body.text, userId: request.user.id});
     if(result){
-      return response.status(200).json({message: "Post created successfully"});
+      const createdPost = await PostService.getPostById(result.insertId);
+      return response.status(200).json({message: "Post created successfully", post: createdPost});
     }
     throw new Error("Post not created");
   }catch(err){

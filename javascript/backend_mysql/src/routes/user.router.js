@@ -21,11 +21,11 @@ userRouter.post("/login", async (request, response) => {
   try {
     const { body } = request;
     const result = await UserSerivice.login(body);
-    console.log(result);
     if (result) {
       const token = generateToken(result);
       return response.status(200).json({ ...result, token });
     }
+    console.log(result);
     response.status(401).json({ message: "Invalid Credentials" });
   } catch (error) {
     console.log(error);
@@ -62,7 +62,7 @@ userRouter.post("/avatar", authMiddleware, async (req, res) => {
         const filePath = join(process.cwd(), 'public', 'files', newFileName);
         file.pipe(createWriteStream(filePath));
         const oldFilename = await UserSerivice.getAvatar(req.user.id);
-        if (oldFilename) {
+        if (oldFilename && oldFilename !== 'placeholder.png') {
           const oldFilePath = join(process.cwd(), 'public', 'files', oldFilename);
           try {
             await unlink(oldFilePath);
