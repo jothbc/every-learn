@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lista de Tarefas</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <h1>Minha Lista de Tarefas</h1>
+
+  <form id="adicionar-tarefa">
+    <input type="text" id="nova-tarefa" placeholder="Digite sua nova tarefa" required>
+    <button type="submit">Adicionar</button>
+  </form>
+
+  <ul id="lista-tarefas">
+    <li>
+      <input type="checkbox" id="tarefa1">
+      <label for="tarefa1">Tarefa 1</label>
+      <button>X</button>
+    </li>
+    <li>
+      <input type="checkbox" id="tarefa2">
+      <label for="tarefa2">Tarefa 2</label>
+      <button>X</button>
+    </li>
+    <li class="feito">
+      <input type="checkbox" id="tarefa3" checked>
+      <label for="tarefa3">Tarefa 3</label>
+      <button>X</button>
+    </li>
+    <li>
+      <input type="checkbox" id="tarefa4">
+      <label for="tarefa4">Tarefa 4</label>
+      <button>X</button>
+    </li>
+  </ul>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
