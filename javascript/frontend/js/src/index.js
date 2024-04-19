@@ -15,17 +15,14 @@ avatarInput.addEventListener('change', async () => {
   const file = files[0];
   try {
     const fd = new FormData();
-    fd.append('id', user.id);
     fd.append('avatar', file);
     const response = await api(API_ROUTES.AVATAR, {
       method: 'POST',
       body: fd,
-      headers: {},
     });
-    userImage.src = `${API_ROUTES.IMAGE}${response.file.filename}`;
-    user.avatar = response.file.filename;
+    userImage.src = `${API_ROUTES.IMAGE}${response.filename}`;
+    user.avatar = response.filename;
     localStorage.setItem('mw-user', JSON.stringify(user));
-    console.log(response.data);
   } catch (error) {
     Notiflix.Notify.failure('Ops...');
   }
@@ -73,7 +70,6 @@ form.addEventListener('submit', async (event) => {
     return;
   }
   const send = {
-    id: user.id,
     text: obj.message,
   }
 

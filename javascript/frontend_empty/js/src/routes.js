@@ -3,7 +3,7 @@ const baseURL = 'http://localhost:3333'
 
 export const API_ROUTES = {
   LOGIN: `${baseURL}/user/login`,
-  REGISTER: `${baseURL}/user`,
+  REGISTER: `${baseURL}/user/register`,
   POSTS: `${baseURL}/post`,
   IMAGE: `${baseURL}/files/`,
   AVATAR: `${baseURL}/user/avatar`,

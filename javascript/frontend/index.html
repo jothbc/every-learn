@@ -18,7 +18,7 @@
       const savedUser = localStorage.getItem('mw-user');
       window.user = JSON.parse(savedUser);
 
-      if(!window.user.id){
+      if(!window.user.token){
         window.location.href = './login.html';
       }
     } catch (err) {
