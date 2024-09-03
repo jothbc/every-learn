@@ -7,5 +7,10 @@ const Routes = Router();
 
 Routes.use('/user', userRouter);
 Routes.use('/post', postRouter);
+Routes.use('/test', (request, response) => {
+  response.json({
+    message: 'Hello World'
+  })
+})
 
 export default Routes;
